@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:ns1="http://common.services.adyen.com" 
+	xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" 
+	xmlns:tns="http://payment.services.adyen.com" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" 
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" 
+	targetNamespace="http://payment.services.adyen.com">
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://payment.services.adyen.com">
+      <xsd:complexType name="PaymentRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="amount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="browserInfo" nillable="true" type="ns1:BrowserInfo"/>
+          <xsd:element minOccurs="0" name="card" nillable="true" type="tns:Card"/>
+          <xsd:element minOccurs="0" name="dccAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="dccSignature" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="elv" nillable="true" type="tns:ELV"/>
+          <xsd:element minOccurs="0" name="fraudOffset" nillable="true" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="merchantAccount" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="mpiData" nillable="true" type="tns:ThreeDSecureData"/>
+          <xsd:element minOccurs="0" name="recurring" nillable="true" type="tns:Recurring"/>
+          <xsd:element minOccurs="0" name="reference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="sessionId" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperEmail" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperIP" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperInteraction" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperStatement" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Recurring">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="contract" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Card">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="billingAddress" type="ns1:Address"/>
+          <xsd:element minOccurs="0" name="cvc">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="3"/>
+                <xsd:maxLength value="4"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="expiryMonth">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="2"/>
+                <xsd:maxLength value="2"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="expiryYear">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="4"/>
+                <xsd:maxLength value="4"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="holderName">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="1"/>
+                <xsd:maxLength value="50"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="number">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="9"/>
+                <xsd:maxLength value="19"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="issueNumber">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="1"/>
+                <xsd:maxLength value="2"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="startMonth">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="2"/>
+                <xsd:maxLength value="2"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="startYear">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="4"/>
+                <xsd:maxLength value="4"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ThreeDSecureData">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="authenticationResponse" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="cavv" nillable="true" type="xsd:base64Binary"/>
+          <xsd:element minOccurs="0" name="directoryResponse" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="eci" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="xid" nillable="true" type="xsd:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ELV">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="accountHolderName" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankAccountNumber" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankLocation" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankLocationId" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankName" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="checkFraud">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentRequest" nillable="true" type="tns:PaymentRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="PaymentResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="authCode" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="dccAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="dccSignature" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="fraudResult" nillable="true" type="tns:FraudResult"/>
+          <xsd:element minOccurs="0" name="issuerUrl" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="md" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="paRequest" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="pspReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="refusalReason" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="resultCode" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FraudResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="accountScore" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="results" nillable="true" type="tns:ArrayOfFraudCheckResult"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfFraudCheckResult">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" name="FraudCheckResult" nillable="true" type="tns:FraudCheckResult"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="FraudCheckResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="accountScore" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="checkId" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="name" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="checkFraudResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentResult" nillable="true" type="tns:PaymentResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ServiceException" type="ns1:ServiceException"/>
+      <xsd:complexType name="PaymentRequest3d">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="amount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="browserInfo" nillable="true" type="ns1:BrowserInfo"/>
+          <xsd:element minOccurs="0" name="dccAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="dccSignature" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="fraudOffset" nillable="true" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="md" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="merchantAccount" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="paResponse" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="recurring" nillable="true" type="tns:Recurring"/>
+          <xsd:element minOccurs="0" name="reference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="sessionId" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperEmail" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperIP" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperInteraction" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperStatement" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="authorise3d">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentRequest3d" nillable="true" type="tns:PaymentRequest3d"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="authorise3dResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentResult" nillable="true" type="tns:PaymentResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="refundWithData">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="request" nillable="true" type="tns:PaymentRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="refundWithDataResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="result" nillable="true" type="tns:PaymentResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ModificationRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="authorisationCode" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="merchantAccount" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="modificationAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="originalReference" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="refund">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="modificationRequest" nillable="true" type="tns:ModificationRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ModificationResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="pspReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="response" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="refundResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="refundResult" nillable="true" type="tns:ModificationResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="authorise">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentRequest" nillable="true" type="tns:PaymentRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="authoriseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentResult" nillable="true" type="tns:PaymentResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="capture">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="modificationRequest" nillable="true" type="tns:ModificationRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="captureResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="captureResult" nillable="true" type="tns:ModificationResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="DirectDebitRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="amount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="bankAccount" nillable="true" type="tns:BankAccount"/>
+          <xsd:element minOccurs="0" name="browserInfo" nillable="true" type="ns1:BrowserInfo"/>
+          <xsd:element minOccurs="0" name="dccAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="dccSignature" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="fraudOffset" nillable="true" type="xsd:int"/>
+          <xsd:element minOccurs="0" name="merchantAccount" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="recurring" nillable="true" type="tns:Recurring"/>
+          <xsd:element minOccurs="0" name="reference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="sessionId" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperEmail" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperIP" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperInteraction" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperStatement" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BankAccount">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="bankAccountNumber" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankLocationId" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bankName" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="bic" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="countryCode" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="iban" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="ownerName" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="directdebit">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="request" nillable="true" type="tns:DirectDebitRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="DirectDebitResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fraudResult" nillable="true" type="tns:FraudResult"/>
+          <xsd:element minOccurs="0" name="pspReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="refusalReason" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="resultCode" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="directdebitResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="response" nillable="true" type="tns:DirectDebitResponse"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getDCCQuote">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentRequest" nillable="true" type="tns:PaymentRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getDCCQuoteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="paymentResult" nillable="true" type="tns:PaymentResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancel">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="modificationRequest" nillable="true" type="tns:ModificationRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancelResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="cancelResult" nillable="true" type="tns:ModificationResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="FundTransferRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="authorisationCode" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="merchantAccount" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="modificationAmount" nillable="true" type="ns1:Amount"/>
+          <xsd:element minOccurs="0" name="originalReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="reference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperEmail" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="shopperStatement" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="fundTransfer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="request" nillable="true" type="tns:FundTransferRequest"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="FundTransferResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="pspReference" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="response" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="fundTransferResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" minOccurs="1" name="result" nillable="true" type="tns:FundTransferResult"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://common.services.adyen.com">
+      <xsd:complexType name="Amount">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="currency">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="3"/>
+                <xsd:maxLength value="3"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="value" type="xsd:long"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Address">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="city" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="country" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="houseNumberOrName" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="postalCode" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="stateOrProvince" nillable="true" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="street" nillable="true" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BrowserInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="acceptHeader">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="10"/>
+                <xsd:maxLength value="50"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="1" name="userAgent">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:minLength value="10"/>
+                <xsd:maxLength value="50"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="error" nillable="true" type="ns1:Error"/>
+          <xsd:element minOccurs="0" name="type" nillable="true" type="ns1:Type"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="Error">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Unknown"/>
+          <xsd:enumeration value="NoAmountSpecified"/>
+          <xsd:enumeration value="InvalidCardNumber"/>
+          <xsd:enumeration value="UnableToDetermineVariant"/>
+          <xsd:enumeration value="CVCisNotTheRightLength"/>
+          <xsd:enumeration value="BillingAddressProblem"/>
+          <xsd:enumeration value="InvalidPaRes3dSecure"/>
+          <xsd:enumeration value="SessionAlreadyUsed"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Type">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="internal"/>
+          <xsd:enumeration value="validation"/>
+          <xsd:enumeration value="security"/>
+          <xsd:enumeration value="configuration"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="captureRequest">
+    <wsdl:part name="parameters" element="tns:capture">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorise3dResponse">
+    <wsdl:part name="parameters" element="tns:authorise3dResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refundRequest">
+    <wsdl:part name="parameters" element="tns:refund">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelResponse">
+    <wsdl:part name="parameters" element="tns:cancelResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkFraudResponse">
+    <wsdl:part name="parameters" element="tns:checkFraudResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="directdebitResponse">
+    <wsdl:part name="parameters" element="tns:directdebitResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ServiceException">
+    <wsdl:part name="ServiceException" element="tns:ServiceException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fundTransferRequest">
+    <wsdl:part name="parameters" element="tns:fundTransfer">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authoriseResponse">
+    <wsdl:part name="parameters" element="tns:authoriseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="captureResponse">
+    <wsdl:part name="parameters" element="tns:captureResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authoriseRequest">
+    <wsdl:part name="parameters" element="tns:authorise">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDCCQuoteRequest">
+    <wsdl:part name="parameters" element="tns:getDCCQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="directdebitRequest">
+    <wsdl:part name="parameters" element="tns:directdebit">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refundWithDataResponse">
+    <wsdl:part name="parameters" element="tns:refundWithDataResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refundResponse">
+    <wsdl:part name="parameters" element="tns:refundResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelRequest">
+    <wsdl:part name="parameters" element="tns:cancel">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getDCCQuoteResponse">
+    <wsdl:part name="parameters" element="tns:getDCCQuoteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="checkFraudRequest">
+    <wsdl:part name="parameters" element="tns:checkFraud">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fundTransferResponse">
+    <wsdl:part name="parameters" element="tns:fundTransferResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorise3dRequest">
+    <wsdl:part name="parameters" element="tns:authorise3d">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refundWithDataRequest">
+    <wsdl:part name="parameters" element="tns:refundWithData">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PaymentPortType">
+    <wsdl:operation name="checkFraud">
+      <wsdl:input name="checkFraudRequest" message="tns:checkFraudRequest">
+    </wsdl:input>
+      <wsdl:output name="checkFraudResponse" message="tns:checkFraudResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="authorise3d">
+      <wsdl:input name="authorise3dRequest" message="tns:authorise3dRequest">
+    </wsdl:input>
+      <wsdl:output name="authorise3dResponse" message="tns:authorise3dResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refundWithData">
+      <wsdl:input name="refundWithDataRequest" message="tns:refundWithDataRequest">
+    </wsdl:input>
+      <wsdl:output name="refundWithDataResponse" message="tns:refundWithDataResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refund">
+      <wsdl:input name="refundRequest" message="tns:refundRequest">
+    </wsdl:input>
+      <wsdl:output name="refundResponse" message="tns:refundResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="authorise">
+      <wsdl:input name="authoriseRequest" message="tns:authoriseRequest">
+    </wsdl:input>
+      <wsdl:output name="authoriseResponse" message="tns:authoriseResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="capture">
+      <wsdl:input name="captureRequest" message="tns:captureRequest">
+    </wsdl:input>
+      <wsdl:output name="captureResponse" message="tns:captureResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="directdebit">
+      <wsdl:input name="directdebitRequest" message="tns:directdebitRequest">
+    </wsdl:input>
+      <wsdl:output name="directdebitResponse" message="tns:directdebitResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getDCCQuote">
+      <wsdl:input name="getDCCQuoteRequest" message="tns:getDCCQuoteRequest">
+    </wsdl:input>
+      <wsdl:output name="getDCCQuoteResponse" message="tns:getDCCQuoteResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdl:input name="cancelRequest" message="tns:cancelRequest">
+    </wsdl:input>
+      <wsdl:output name="cancelResponse" message="tns:cancelResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fundTransfer">
+      <wsdl:input name="fundTransferRequest" message="tns:fundTransferRequest">
+    </wsdl:input>
+      <wsdl:output name="fundTransferResponse" message="tns:fundTransferResponse">
+    </wsdl:output>
+      <wsdl:fault name="ServiceException" message="tns:ServiceException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PaymentHttpBinding" type="tns:PaymentPortType">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="checkFraud">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="checkFraudRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="checkFraudResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="authorise3d">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="authorise3dRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authorise3dResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refundWithData">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="refundWithDataRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="refundWithDataResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="refund">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="refundRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="refundResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="authorise">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="authoriseRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authoriseResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="capture">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="captureRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="captureResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="directdebit">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="directdebitRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="directdebitResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getDCCQuote">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getDCCQuoteRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getDCCQuoteResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="cancelRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancelResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fundTransfer">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="fundTransferRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fundTransferResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceException">
+        <wsdlsoap:fault name="ServiceException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Payment">
+    <wsdl:port name="PaymentHttpPort" binding="tns:PaymentHttpBinding">
+      <wsdlsoap:address location="https://pal-live.adyen.com/pal/servlet/soap/Payment"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
